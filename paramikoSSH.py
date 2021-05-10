@@ -1,12 +1,57 @@
 import time as t
 
 import paramiko
+from io import StringIO
 
 p = paramiko.SSHClient()
 p.set_missing_host_key_policy(paramiko.AutoAddPolicy())   # This script doesn't work for me unless this line is added!
-p.connect("169.63.183.157", port=22, username="root", password="")
+
+# p.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+private_key = StringIO('''-----BEGIN OPENSSH PRIVATE KEY-----
+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
+-----END OPENSSH PRIVATE KEY-----''')
+pk = paramiko.RSAKey.from_private_key(private_key)
+p.connect("169.63.183.157", port=22, username="root", pkey = pk)
 stdin, stdout, stderr = p.exec_command("ls -a")
 t.sleep(5)
 opt = stdout.readlines()
 opt = "".join(opt)
 print(opt)
+
+# channel , session, 
